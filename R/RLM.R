@@ -24,9 +24,9 @@ fitRLM <- function(y, x, covariates = NULL, robust = FALSE, ...){
   C <- cbind( rep(1, length(y) ), covariates )  # scalar predictors
   dat <- list( n = length(y), J = ncol(x), d = ncol(C), y = y, x = x, C = C )
   if(robust){
-    fileName <- "discreteModel_robust.stan"
+    fileName <- "RLM_robust.stan"
   }else{
-    fileName <- "discreteModel.stan"
+    fileName <- "RLM.stan"
   }
   stanFile <- system.file("stan", fileName, package = "fRLM")
   fit <- rstan::stan( file = stanFile, data = dat, ...)
@@ -34,7 +34,7 @@ fitRLM <- function(y, x, covariates = NULL, robust = FALSE, ...){
 
 
 #' @export
-fitRLM_missingIncome <- function(y, x, z_obs, u, covariates = NULL, robust = FALSE, ...){
+fitRLM_missingIncome <- function(y, x, z_obs, u, covariates = NULL, ...){
   n <- length(y)
   n_obs <- sum( !is.na(z_obs) )
   C <- cbind( rep(1, length(y) ), covariates )  # scalar predictors
@@ -44,11 +44,7 @@ fitRLM_missingIncome <- function(y, x, z_obs, u, covariates = NULL, robust = FAL
   new_index <- c(obs_index, miss_index)
   dat <- list(n = n, n_obs = n_obs, J = ncol(x), K = ncol(u), d = ncol(C), y = y[new_index], z_obs = z_obs[new_index][1:n_obs], 
               x = x[new_index, ], u = u[new_index, ], C = as.matrix(C[new_index,] ) )
-  if(robust){
-    fileName <- "discreteModel_robust_missing_income.stan"
-  }else{
-    fileName <- "discreteModel_missing_income.stan"
-  }
+  fileName <- "RLM_missing_income.stan"
   stanFile <- system.file("stan", fileName, package = "fRLM")
   fit <- rstan::stan( file = stanFile, data = dat, ...)
 }
@@ -78,21 +74,17 @@ fitRLM_missingIncome <- function(y, x, z_obs, u, covariates = NULL, robust = FAL
 #' y <- x %*% t(weights) %*% diag(delta) + eps
 #' fitMV_RLM(y, x, warmup = 2000, iter = 4000, chains = 4)
 #' @export
-fitMV_RLM <- function(y, x, covariates = NULL, robust = FALSE, ...){
+fitMV_RLM <- function(y, x, covariates = NULL, ...){
   C <- cbind( rep(1, nrow(y) ), covariates )  # scalar predictors
   dat <- list(n = nrow(y), p = ncol(y), J = ncol(x), d = ncol(C), y = y, x = x, C = C)
-  if(robust){
-    fileName <- "MV_RLM_robust.stan"
-  }else{
-    fileName <- "MV_RLM.stan"
-  }
+  fileName <- "MV_RLM.stan"
   stanFile <- system.file("stan", fileName, package = "fRLM")
   fit <- rstan::stan( file = stanFile, data = dat, ...)
 }
 
 
 #' @export
-fitMV_RLM_missingIncome <- function(y, x, z_obs, u, covariates = NULL, robust = FALSE, ...){
+fitMV_RLM_missingIncome <- function(y, x, z_obs, u, covariates = NULL, ...){
   n <- nrow(y)
   p <- ncol(y)
   n_obs <- sum( !is.na(z_obs) )
@@ -105,11 +97,25 @@ fitMV_RLM_missingIncome <- function(y, x, z_obs, u, covariates = NULL, robust = 
               d = ncol(C), y = y[new_index,], z_obs = z_obs[new_index][1:n_obs], 
               x = x[new_index, ], u = u[new_index, ], C = as.matrix(C[new_index, 
               ]))
-  if(robust){
-    fileName <- "MV_RLM_missingIncome_robust.stan"
-  }else{
-    fileName <- "MV_RLM_missingIncome.stan"
-  }
+  fileName <- "MV_RLM_missingIncome.stan"
   stanFile <- system.file("stan", fileName, package = "fRLM")
   fit <- rstan::stan( file = stanFile, data = dat, ...)
 }
+
+
+#' @export
+fitRLM_mediation <- function(y, x, mediator, covariates = NULL, ...){
+  C <- cbind( rep(1, length(y) ), covariates )  # scalar predictors
+  dat <- list( n = length(y), J = ncol(x), d = ncol(C), y = y, x = x, M = mediator, C = C )
+  fileName <- "RLM_mediation.stan"
+  stanFile <- system.file("stan", fileName, package = "fRLM")
+  fit <- rstan::stan( file = stanFile, data = dat, ... )
+}
+
+
+
+
+
+
+
+
