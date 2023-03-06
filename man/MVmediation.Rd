@@ -29,4 +29,5 @@ z <- rnorm(n)
 M <- z + rnorm(n)
 delta <- c(2,1,3)
 y <- sapply( delta, function(d) d * z + 2 * M + rnorm(n) )
+fit <- MVmediation(y, z, M, warmup = 2000, iter = 4000, chains = 4)
 }
