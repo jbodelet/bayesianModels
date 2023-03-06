@@ -27,6 +27,6 @@ Multivariate Mediation
 n <- 200
 z <- rnorm(n)
 M <- z + rnorm(n)
-y <- 2 * z + 2 * M + rnorm(n)
-fit <- mediation(y, z, M, warmup = 2000, iter = 4000, chains = 4)
+delta <- c(2,1,3)
+y <- sapply( delta, function(d) d * z + 2 * M + rnorm(n) )
 }
