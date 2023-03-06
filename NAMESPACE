@@ -3,5 +3,6 @@
 export(fitMV_RLM)
 export(fitMV_RLM_missingIncome)
 export(fitRLM)
+export(fitRLM_mediation)
 export(fitRLM_missingIncome)
 export(mediation)

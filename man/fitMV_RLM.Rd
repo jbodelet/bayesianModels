@@ -4,18 +4,18 @@
 \alias{fitMV_RLM}
 \title{Multivariate RELEVANT LIFE COURSE MODEL}
 \usage{
-fitMV_RLM(y, x, covariates = NULL, robust = FALSE, ...)
+fitMV_RLM(y, x, covariates = NULL, ...)
 }
 \arguments{
 \item{y}{The output matrix.}
 
 \item{x}{A n times M matrix containing the n functions evaluated at points specified in grid.}
 
-\item{robust}{If TRUE, use a t-distribution as a likelihood.}
-
 \item{...}{Optional parameters to pass to the stan function.}
 
 \item{Covariates}{A matrix of covariates.}
+
+\item{robust}{If TRUE, use a t-distribution as a likelihood.}
 }
 \value{
 An list containing estimates for alpha, delta, beta, gamma, sigma2, and omega.
