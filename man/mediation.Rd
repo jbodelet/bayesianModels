@@ -25,12 +25,11 @@ Mediation
 }
 \examples{
 n <- 200
-p <- 3
-z <- matrix( rnorm(n*p), ncol = p )
-a <- c(1,2,3)
-b <- c(0,2,1)
-M <- c(z \%*\% a + rnorm(n))
-delta <- c(2,1,3)
-y <- sapply( 1:p, function(j) delta[j] * z[, j] + b[j] * M + rnorm(n) )
+z <- rnorm(n)
+a <- 1
+b <- 2
+M <- z * a + rnorm(n)
+delta <- 2
+y <- delta * z + b * M + rnorm(n)
 fit <- MVmediation(y, z, M, warmup = 2000, iter = 4000, chains = 4)
 }
