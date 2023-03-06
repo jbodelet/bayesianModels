@@ -37,6 +37,7 @@ mediation <- function(y, x, M, covariates = NULL, ... ){
 #' M <- z + rnorm(n)
 #' delta <- c(2,1,3)
 #' y <- sapply( delta, function(d) d * z + 2 * M + rnorm(n) )
+#' fit <- MVmediation(y, z, M, warmup = 2000, iter = 4000, chains = 4)
 MVmediation <- function(y, x, M, covariates = NULL, ... ){
   C <- cbind( rep(1, nrow(y) ), covariates ) # add a column of ones for the intercept
   dat <- list( n = nrow(y), p = ncol(y), d = ncol(C), y = y, x = x, M = M, C = C )
